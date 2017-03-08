@@ -6,6 +6,8 @@ const webpack = require('webpack');
 
 const TARGET = process.env.npm_lifecycle_event;
 
+const NpmInstallPlugin = require('npm-install-webpack-plugin');
+
 const PATHS = {
 	app: path.join(__dirname, 'app'),
 	build: path.join(__dirname, 'build')
@@ -34,6 +36,7 @@ const common = {
 //default configuration
 if(TARGET === 'start' || !TARGET){
 	module.exports = merge(common, {
+		devtool: 'eval-source-map',
 		devServer:{
 			contentBase: PATHS.build,
 			historyApiFallback: true,
@@ -44,7 +47,10 @@ if(TARGET === 'start' || !TARGET){
 			port: process.env.PORT
 		},
 		plugins: [
-			new webpack.HotModuleReplacementPlugin()
+			new webpack.HotModuleReplacementPlugin(),
+			new NpmInstallPlugin({
+			save: true // --save
+			})
 		]
 	});
 }
