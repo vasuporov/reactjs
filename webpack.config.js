@@ -13,9 +13,14 @@ const PATHS = {
 	build: path.join(__dirname, 'build')
 };
 
+process.env.BABEL_ENV = TARGET;
+
 const common = {
 	entry: {
 		app: PATHS.app
+	},
+	resolve: {
+		extensions: ['.js', '.jsx']
 	},
 	output: {
 		path: PATHS.build,
@@ -27,6 +32,16 @@ const common = {
 				test: /\.css$/,
 				loaders: ['style-loader', 'css-loader'],
 				// Include accepts either a path or an array of paths.
+				include: PATHS.app
+			},
+			{
+				test: /\.jsx?$/,
+				// Enable caching for improved performance during development
+				// It uses default OS directory by default. If you need something
+				// more custom, pass a path to it. I.e., babel?cacheDirectory=<path>
+				loaders: ['babel-loader?cacheDirectory'],
+				// Parse only app files! Without this it will go through entire project.
+				// In addition to being slow, that will most likely result in an error.
 				include: PATHS.app
 			}
 		]
