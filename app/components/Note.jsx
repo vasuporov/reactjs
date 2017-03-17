@@ -30,14 +30,28 @@ export default class Note extends React.Component {
 	};
 
 	renderNote = () => {
-		return <div onClick={this.edit}>{this.props.task}</div>;
+		const onDelete = this.props.onDelete;
+
+		return (
+		<div onClick={this.edit}>
+			<span>{this.props.task}</span>
+			{onDelete ? this.renderDelete() : null}
+		</div>	
+		);
 	};
 
+	renderDelete = () => {
+		return <button onClick={this.props.onDelete}>X</button>	;
+	}
 	edit = () => {
 		this.setState({
 			editing: true
 		});
 	};
+
+	delete = (e) => {
+
+	}
 
 	checkEnter = (e) => {
 		console.log(e.key);
@@ -54,7 +68,7 @@ export default class Note extends React.Component {
 
 		if(this.props.onEdit){
 			console.log('inside finish edits if');
-			
+
 			this.props.onEdit(value);
 
 			this.setState({
